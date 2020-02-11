@@ -1,5 +1,6 @@
 package com.juara.databasesqlite;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -9,6 +10,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -20,10 +23,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String CONTACTS_COLUMN_STREET = "street";
     public static final String CONTACTS_COLUMN_CITY = "place";
     public static final String CONTACTS_COLUMN_PHONE = "phone";
+    public static final String FILE_DIR = "belajarsqlite";
     private HashMap hp;
 
     public DbHelper(Context context) {
-        super(context, DATABASE_NAME , null, 1);
+        super(context, Environment.getExternalStorageDirectory()
+                + File.separator + FILE_DIR
+                + File.separator + DATABASE_NAME, null, 1 );
+        Log.d("Alamat SQLITE",Environment.getExternalStorageDirectory()
+                + File.separator + FILE_DIR
+                + File.separator + DATABASE_NAME);
     }
 
     @Override
@@ -56,6 +65,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public Cursor getData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor res =  db.rawQuery( "select * from contacts where id="+id+"", null );
         return res;
     }
